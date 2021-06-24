@@ -1,10 +1,10 @@
 const WebSocket = require('ws');
 
-
+const rooms = {};
 
 async function start() {
 
-  const gen = await import('./public/scripts/modules/generator.mjs')
+  const gen = await import('./modules/generator.mjs')
 
   const wss = new WebSocket.Server({
      port: 8081
@@ -15,10 +15,25 @@ async function start() {
 
     ws.on('message', message => {
       console.log(message);
-      
 
-      const board = gen.generate_board(50, 30, 300);
-      ws.send(JSON.stringify(board))
+      msg = JSON.parse(message);
+      if (msg.msg == "hello") {
+
+        const room = msg.room;
+        if (!rooms.room) {
+          rooms.room = {name: room, board: gen.generate_board(50, 30, 300), people: 1, users: [msg.user]};
+        } else {
+          rooms.room.people++;
+          rooms.room.users.push(msg.user);
+        }
+
+        ws.send(JSON.stringify(rooms.room));
+
+        return;
+      }
+
+      ws.send("invalid message");
+
     });
 
   })

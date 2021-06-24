@@ -1,18 +1,26 @@
+let board;
 
-import {generate_board} from './modules/generator.mjs';
 
+function connect_room() {
 
-function populate() {
+  const room = document.getElementById("room_field").value;
+  const user = document.getElementById("user_field").value;
+
+  document.getElementById("room_form").style.display = "none";
 
   const ws = new WebSocket('ws://localhost:8081');
 
   ws.onopen = () => {
-    ws.send("hello");
+    ws.send(JSON.stringify({msg: "hello", room, user}));
   }
 
   ws.onmessage = function(e) {
     console.log(e);
-    let board = JSON.parse(e.data);
+    const msg = JSON.parse(e.data);
+
+    document.getElementById("room_info").innerHTML = `Room: ${msg.name}, People: ${msg.people}, Users: ${msg.users}`
+
+    board = msg.board;
 
     const board_div = document.getElementById("board");
 
@@ -49,8 +57,16 @@ function populate() {
       board_div.appendChild(document.createElement("br"))
     }
 
+    board_div.style.display = "block";
+
   };
 
+  return false;
 
 }
-window.onload = populate;
+
+window.onload = () => {
+  console.log("loaded");
+  document.getElementById("room_form").onsubmit = connect_room;
+
+}
