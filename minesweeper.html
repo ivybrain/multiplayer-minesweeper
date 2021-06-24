@@ -10,6 +10,8 @@
     }
   </style>
 
+  <script type="module" src="client.js"></script>
+
 </head>
 
 
@@ -17,23 +19,5 @@
 
   <div id="board">
   </div>
-
-  <script>
-
-    const width = 50;
-    const height = 30;
-
-    const board = document.getElementById("board")
-
-    for (let i=0; i < height; i++) {
-      for (let j = 0; j < width; j++) {
-        let cell = document.createElement("button")
-        cell.className = "cell"
-        board.appendChild(cell)
-      }
-      board.appendChild(document.createElement("br"))
-    }
-
-  </script>
 
 </body>
