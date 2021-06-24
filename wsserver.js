@@ -16,14 +16,14 @@ async function start(app) {
       if (msg.msg == "hello") {
 
         const room = msg.room;
-        if (!rooms.room) {
-          rooms.room = {name: room, board: gen.generate_board(50, 30, 300), people: 1, users: [msg.user]};
+        if (!rooms[room]) {
+          rooms[room] = {name: room, board: gen.generate_board(50, 30, 300), people: 1, users: [msg.user]};
         } else {
-          rooms.room.people++;
-          rooms.room.users.push(msg.user);
+          rooms[room].people++;
+          rooms[room].users.push(msg.user);
         }
 
-        ws.send(JSON.stringify(rooms.room));
+        ws.send(JSON.stringify(rooms[room]));
 
         return;
       }
