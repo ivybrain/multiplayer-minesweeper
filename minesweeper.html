@@ -1,0 +1,39 @@
+
+<head>
+  <style>
+    .cell {
+      width: 20px;
+      height: 20px;
+      background-color: lightgrey;
+      margin: 1px;
+
+    }
+  </style>
+
+</head>
+
+
+<body>
+
+  <div id="board">
+  </div>
+
+  <script>
+
+    const width = 50;
+    const height = 30;
+
+    const board = document.getElementById("board")
+
+    for (let i=0; i < height; i++) {
+      for (let j = 0; j < width; j++) {
+        let cell = document.createElement("button")
+        cell.className = "cell"
+        board.appendChild(cell)
+      }
+      board.appendChild(document.createElement("br"))
+    }
+
+  </script>
+
+</body>
