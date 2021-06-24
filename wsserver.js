@@ -1,16 +1,12 @@
-const WebSocket = require('ws');
-
 const rooms = {};
 
-async function start() {
+async function start(app) {
+
+  const expressWs = require('express-ws')(app);
 
   const gen = await import('./modules/generator.mjs')
 
-  const wss = new WebSocket.Server({
-     port: 8081
-  });
-
-  wss.on('connection', function connection(ws) {
+  app.ws('/', function connection(ws, req) {
     console.log("connected");
 
     ws.on('message', message => {

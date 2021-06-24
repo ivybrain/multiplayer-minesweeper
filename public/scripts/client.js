@@ -8,7 +8,8 @@ function connect_room() {
 
   document.getElementById("room_form").style.display = "none";
 
-  const ws = new WebSocket('ws://localhost:8081');
+  const host = location.origin.replace(/^http/, 'ws')
+  const ws = new WebSocket(host);
 
   ws.onopen = () => {
     ws.send(JSON.stringify({msg: "hello", room, user}));
