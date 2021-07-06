@@ -23,34 +23,26 @@ function label_frees(board) {
 
 function generate_board(width, height, mines) {
   mines = mines >= width*height ? width * height - 1 : mines;
+  let cells_rem = width * height;
 
   const chance = mines / (width * height);
   const cells = new Array(height);
 
 
   // Initialise the board, and place mines according to chance, up to limit
-  let laid = 0;
+
+
   for (let i=0; i<height; i++) {
     cells[i] = new Array(width)
 
     for (let j=0; j<width; j++) {
-      let is_mine = laid < mines && Math.random() < chance;
-      laid += is_mine;
+      let is_mine = Math.random() < (mines / cells_rem);
+      console.log(mines/cells_rem);
+      mines -= is_mine;
+      cells_rem--;
       cells[i][j] = is_mine ? -1 : 0
     }
 
-  }
-
-  // If there are less mines than the specified amount, place rest randomly
-  while (laid < mines) {
-    const i = Math.floor(Math.random() * height);
-    const j = Math.floor(Math.random() * width);
-
-    if (cells[i][j] == -1)
-      continue;
-
-    cells[i][j] = -1;
-    laid++;
   }
 
   const board = {width, height, mines, cells};
